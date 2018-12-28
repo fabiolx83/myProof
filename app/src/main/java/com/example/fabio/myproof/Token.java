@@ -172,7 +172,7 @@ public class Token extends ArrayList<Command> {
                 int k=0, temp;
                 while ((temp=next(j))<=i) {j = temp; k++;}
                 active.app(new Command("#"+k));
-                active.root().setOutput(get(j).output());   // deprecated
+                //active.root().setOutput(get(j).output());   // deprecated
             }
 
     }
@@ -185,18 +185,20 @@ public class Token extends ArrayList<Command> {
                 int k=0, temp;
                 while ((temp=next(i))<=index) {i = temp; k++;}
                 active.app(new Command("#"+k));
-                active.root().setOutput(get(i).output());   // deprecated
+                //active.root().setOutput(get(i).output());   // deprecated
             }
 
     }
     void shiftReference(int i,int t) {
         // Shift references greater than i by t.
-        for (Command item:this)
+        for (int k=0;k<size();k++) {
+            Command item = get(k);
             if (item.name.startsWith("§")) {
                 int j = Integer.parseInt(item.name.substring(1));
-                if (t<0 && j==i) item.setCommand(store.get("blank"));
-                if (j>i) item.setConstant("§" + (j+t));
+                if (t < 0 && j == i) set(k,store.get("blank"));
+                if (j > i) set(k,store.get("§" + (j + t)));//item.setConstant("§" + (j+t));
             }
+        }
     }
 
     boolean isComplete() {return true;}
@@ -388,7 +390,7 @@ public class Token extends ArrayList<Command> {
     private ArrayList<String> toStringList() {
         ArrayList<String> output = new ArrayList<>();
         for (Command item:this)
-            output.add(item.toString());
+            output.add(item.name);
         return output;
     }
     private ArrayList<String> toIntegerStringList() {

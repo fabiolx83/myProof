@@ -26,9 +26,11 @@ import java.util.List;
 
 import io.github.kexanie.library.MathView;
 
+import static com.example.fabio.myproof.Other.checkName;
+import static com.example.fabio.myproof.Other.getExternalName;
 import static com.example.fabio.myproof.R.layout.file;
-import static com.example.fabio.myproof.Timing.duration;
-import static com.example.fabio.myproof.Timing.time;
+import static com.example.fabio.myproof.Other.duration;
+import static com.example.fabio.myproof.Other.time;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -244,11 +246,11 @@ public class MainActivity extends AppCompatActivity {
         } else if (store.containsKey(name)) {
             confirmDialog.setMessage("Overwrite command "+name+"?");
             confirmDialog.show();
-        } else if (!name.matches("\\w+")) {
+        } else if (!checkName(name)) {
             showMessage("Invalid command name.");
             return;
         } else if (store.add(new Command(name,steps))) {
-            adapter.add(name.replace("_", " "));
+            adapter.add(getExternalName(name));
             adapter.notifyDataSetChanged();
             showMessage("Command " + name + " saved.");
         } else showMessage("Command " + name + " not saved.");
@@ -297,19 +299,20 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         String name = getInputName();
-        if (!name.matches("\\w+")) {
+        if (!checkName(name)) {
             showMessage("Invalid command name.");
             return;
         }
         if (steps.size()>1) return;
         Command command = steps.activeStep().get(0);
-        adapter.remove(command.name.replace("_"," "));
+        adapter.remove(getExternalName(command.name));
         if (store.containsKey(name)) {
             showMessage("Command "+name+" already exists.");
             name = "temp";
         } else {
-            setAdapter(name);
+            adapter.add(getExternalName(name));
         }
+        adapter.notifyDataSetChanged();
         showMessage("Command "+command.name+" renamed "+name);
         store.rename(command,name);
     }

@@ -277,8 +277,8 @@ public class Command implements Serializable {
         return new Token(this,arg);
     }
 
-    public int hashCode() {return toString().hashCode();}
-    public String toString() {return name.replace(" ","_");}
+    public int hashCode() {return name.hashCode();}
+    public String toString() {return name;}
     public String getSource() {
         ArrayList<String> temp = new ArrayList<>();
         temp.add(description);
@@ -287,6 +287,7 @@ public class Command implements Serializable {
         temp.add(getBrackets());
         for (Token step:definition)
             temp.add(step.toString());
+        temp.add("@"+name);
         return join("\n",temp);
     }
     public String getIntegerSource() {

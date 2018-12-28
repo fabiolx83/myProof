@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import static android.text.TextUtils.join;
+import static com.example.fabio.myproof.Other.isConstant;
 
 /**
  * Created by fabio on 20/06/2017.
@@ -84,11 +85,11 @@ class Store extends HashMap<String,Command> {
     void update(String name) {}
     public Command get(String name) {
         if (name.isEmpty()) return super.get("blank");
-        if (isConstant(name)) return new Command(name);
+        //if (isConstant(name)) return new Command(name);
         Command output = super.get(name);
         if (output==null) {
             output = new Command(name);
-            if (name.matches("\\w+"))
+            //if (name.matches("\\w+"))
                 put(name,output);
             return output;
         }
@@ -101,14 +102,6 @@ class Store extends HashMap<String,Command> {
         } else {
             return names.indexOf(id);
         }
-    }
-
-    private boolean isConstant(String name) {
-        if (name.startsWith("\\")) return true;
-        if (name.startsWith("§")) return true;
-        if (name.startsWith("#")) return true;
-        //if (name.length()==1) return true;
-        return false;
     }
 
     void update() {
@@ -182,12 +175,10 @@ class Store extends HashMap<String,Command> {
         try {
             FileWriter writer = new FileWriter(file);
             for (Command command:values()) {
+                if (isConstant(command.name)) continue;
                 if (command.output().equals("Variable") && command.name.equals(command.latex))
                     continue;
                 writer.append(command.getSource());
-                writer.append("\n");
-                writer.append("@");
-                writer.append(command.name);
                 writer.append("\n");
             }
             writer.flush();
@@ -209,7 +200,7 @@ class Store extends HashMap<String,Command> {
                 if (line==null||line.matches("@\\d+:.+")) {
                     if (i >= 0) {
                         while (source.size() < 4) source.add("");
-                        set(i, name, source);
+                        //set(i, name, source);
                         source.clear();
                     }
                     if (line!=null) {
