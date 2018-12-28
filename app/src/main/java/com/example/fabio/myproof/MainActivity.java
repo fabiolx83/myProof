@@ -230,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
         layout.removeAllViews();
         steps = new Steps();
         addMathView();
+        setTitle("MyProof");
         showStep(0);
     }
     public void onSaveClick(View v) {
@@ -264,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
         Command command = store.get(name);
         time();steps = new Steps(command.definition);time();
         //layout.removeAllViews();
+        setTitle(name);
         showSteps();
         enableAutoScroll();
         showMessage(String.valueOf(duration));
@@ -373,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         if (steps.isBlank()) {
+            setTitle(name);
             layout.removeViewAt(0);
             Command command = store.get(name);
             EditText etDescription = inflateNewEditText();
