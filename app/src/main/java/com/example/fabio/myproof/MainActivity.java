@@ -222,6 +222,15 @@ public class MainActivity extends AppCompatActivity {
             name = name.substring(1,name.length());
         return name;
     }
+    private String getTitleName() {
+        String name = getTitle().toString().replace(" ","_");
+        name=name.replaceAll("_+","_");
+        if (name.endsWith("_"))
+            name = name.substring(0,name.length()-1);
+        if (name.startsWith("_"))
+            name = name.substring(1,name.length());
+        return name;
+    }
 
     public void clearInputTextClick(View v) {inputText.setText("");}
     public void onClearClick(View v) {
@@ -242,8 +251,15 @@ public class MainActivity extends AppCompatActivity {
         String name = getInputName();
         saveSteps();
         if (name.isEmpty()) {
-            store.set("temp", steps);
-            showMessage("Commands saved.");
+            String title = getTitleName();
+            if (title.equals("MyProof")) {
+                store.set("temp", steps);
+                showMessage("Commands saved.");
+            } else {
+                inputText.setText(getExternalName(title));
+                confirmDialog.setMessage("Overwrite command "+title+"?");
+                confirmDialog.show();
+            }
         } else if (store.containsKey(name)) {
             confirmDialog.setMessage("Overwrite command "+name+"?");
             confirmDialog.show();
