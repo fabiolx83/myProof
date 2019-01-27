@@ -171,7 +171,7 @@ public class Token extends ArrayList<Command> {
             else {
                 int k=0, temp;
                 while ((temp=next(j))<=i) {j = temp; k++;}
-                active.app(new Command("#"+k));
+                active.app(store.get("#"+k));
                 //active.root().setOutput(get(j).output());   // deprecated
             }
 
@@ -184,7 +184,7 @@ public class Token extends ArrayList<Command> {
             else {
                 int k=0, temp;
                 while ((temp=next(i))<=index) {i = temp; k++;}
-                active.app(new Command("#"+k));
+                active.app(store.get("#"+k));
                 //active.root().setOutput(get(i).output());   // deprecated
             }
 
@@ -393,7 +393,7 @@ public class Token extends ArrayList<Command> {
             output.add(item.name);
         return output;
     }
-    private ArrayList<String> toIntegerStringList() {
+    private ArrayList<String> toIntegerStringList() {   // deprecated
         ArrayList<String> output = new ArrayList<>();
         for (Command item:this) {
             int i=store.names.indexOf(item.name);
@@ -410,7 +410,7 @@ public class Token extends ArrayList<Command> {
     }
     public boolean equals(Object o) {return hashCode()==o.hashCode();}
     public String toString() {return TextUtils.join(" ",toStringList());}
-    public String toIntegerString() {return TextUtils.join(" ",toIntegerStringList());}
+    public String toIntegerString() {return TextUtils.join(" ",toIntegerStringList());} //deprecated
 
     String getLaTeXCode(boolean active) {
         String[] temp = new String[size()];

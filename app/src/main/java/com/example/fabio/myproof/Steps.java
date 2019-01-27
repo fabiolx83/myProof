@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static android.text.TextUtils.join;
+import static com.example.fabio.myproof.MainActivity.store;
 
 /**
  * Created by fabio on 09/04/2017.
@@ -172,21 +173,21 @@ class Steps extends ArrayList<Token> {
         last = select;
         select = modulo(i); // select is computed modulo active step index.
         selectStep().index=0;
-        activeStep().put(new Command("§" + select));
+        activeStep().put(store.get("§" + select));
         //activeStep().root().setOutput(selectToken(0).output());
         reduceActiveStep();
     }
     void shiftSelectStep(int t) {setSelectStep(select+t);}
     void shiftSelectToken(int t) {
         selectStep().shift(t);
-        activeStep().put(new Command("§" + select));
+        activeStep().put(store.get("§" + select));
         //activeStep().root().setOutput(selectToken(0).output());
         selectStep().putReference(activeStep());
         reduceActiveStep();
     }
     void shiftSelectLeaf(int t) {
         selectStep().shiftLeaf(t);
-        activeStep().put(new Command("§" + select));
+        activeStep().put(store.get("§" + select));
         selectStep().putReference(activeStep());
         reduceActiveStep();    }
     void offSelect() {

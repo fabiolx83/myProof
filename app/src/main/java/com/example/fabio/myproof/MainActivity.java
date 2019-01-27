@@ -188,12 +188,13 @@ public class MainActivity extends AppCompatActivity {
             adapter.clear();
         //Collections.sort(store.keySet());
         for (String item:store.keySet())
-            adapter.add(item.replace("_"," "));
+            adapter.add(getExternalName(item));
         adapter.notifyDataSetChanged();
     }
     private void setAdapter(String name) {
-        if (adapter.getPosition(name)<0) {
-            adapter.add(name.replace("_", " "));
+        String temp = getExternalName(name);
+        if (adapter.getPosition(temp)<0) {
+            adapter.add(temp);
             adapter.notifyDataSetChanged();
         }
     }
@@ -281,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         Command command = store.get(name);
         time();steps = new Steps(command.definition);time();
         //layout.removeAllViews();
-        setTitle(name);
+        setTitle(getExternalName(name));
         showSteps();
         enableAutoScroll();
         showMessage(String.valueOf(duration));
@@ -427,10 +428,7 @@ public class MainActivity extends AppCompatActivity {
         command.type = ((EditText)layout.getChildAt(1)).getText().toString().replace(" ","").split("->");
         command.latex = ((EditText)layout.getChildAt(2)).getText().toString();
         command.setBrackets(((EditText)layout.getChildAt(3)).getText().toString());
-        //if (store.add(command)) {
-            adapter.add(command.name.replace("_"," "));
-            adapter.notifyDataSetChanged();
-        //} //else store.save(command);
+        setAdapter(name);
         store.saveAll();
         showMessage("Command source saved.");
         onClearClick(v);

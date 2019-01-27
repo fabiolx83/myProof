@@ -190,7 +190,8 @@ public class Command implements Serializable {
     boolean isBlank() {return name.equals("blank");}
     boolean isError() {return name.equals("error");}
     boolean isGeneric() {
-        switch (name) {
+        switch (name) { //display commands can be removed from here because they reduce to non-display command
+            case "token":
             case "display_premise":case "premise":
             case "display_statement":case "statement":
             case "display_sentence":case "sentence":
@@ -248,7 +249,7 @@ public class Command implements Serializable {
                 int n = Integer.parseInt(name.substring(1));
                 return arg[0].leaf(0,n);
             }
-            //
+            // this can be removed because that reduction is obtained as for all other commands, i.e. by definition.
             if (name.startsWith("display_"))
                 return new Token(name.replace("display_",""),arg);
             // root is a primitive command.
