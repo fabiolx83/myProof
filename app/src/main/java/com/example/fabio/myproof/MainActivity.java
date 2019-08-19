@@ -268,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
             showMessage("Invalid command name.");
             return;
         } else if (store.add(new Command(name,steps))) {
+            setTitle(getExternalName(name));
             adapter.add(getExternalName(name));
             adapter.notifyDataSetChanged();
             showMessage("Command " + name + " saved.");
@@ -324,13 +325,13 @@ public class MainActivity extends AppCompatActivity {
         }
         if (steps.size()>1) return;
         Command command = steps.activeStep().get(0);
-        adapter.remove(getExternalName(command.name));
-        if (store.containsKey(name)) {
+
+        if (!name.equals("temp")&&store.containsKey(name)) {
             showMessage("Command "+name+" already exists.");
-            name = "temp";
-        } else {
-            adapter.add(getExternalName(name));
+            return;
         }
+        adapter.remove(getExternalName(command.name));
+        adapter.add(getExternalName(name));
         adapter.notifyDataSetChanged();
         showMessage("Command "+command.name+" renamed "+name);
         store.rename(command,name);
@@ -437,9 +438,12 @@ public class MainActivity extends AppCompatActivity {
     private void saveSteps() {
         SharedPreferences.Editor editor = sharedTemp.edit();
         editor.putString("steps",steps.toString());
-        editor.commit();
+        editor.putString("title",getTitle().toString());
+        editor.apply();//editor.commit();
     }
     private void loadSteps () {
+        String title = sharedTemp.getString("title","MyProof");
+        setTitle(title);
         String source = sharedTemp.getString("steps","");
         steps = new Steps(source);
     }
